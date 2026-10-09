@@ -12,6 +12,7 @@ public class CartPage {
 
     private final By cartItems     = By.cssSelector(".cart_item");
     private final By cartItemNames = By.cssSelector(".inventory_item_name");
+    private final By checkout = By.cssSelector("[data-test='checkout']");
 
     public CartPage(WebDriver driver) {
         this.driver = driver;
@@ -40,4 +41,9 @@ public class CartPage {
     public void removeItem(String itemName) {
         driver.findElement(itemButton(itemName)).click();
     }
+    public CheckoutStepOnePage checkout() {
+        driver.findElement(checkout).click();
+        return new CheckoutStepOnePage(driver);
+    }
+
 }
