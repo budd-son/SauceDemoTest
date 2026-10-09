@@ -5,11 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class LoginPage {
-    private WebDriver driver;
+    private final WebDriver driver;
     private By usernameInput = By.id("user-name");
     private By passwordInput = By.id("password");
     private By loginButton = By.id("login-button");
-    //private By errorMessage = ;
+    private By errorMessage = By.xpath("//*[contains(text(),'Epic sadface')]");
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -39,6 +39,12 @@ public class LoginPage {
         clickLoginButton();
         return new InventoryPage(driver);
     }
+    public String getError() {
+        WebElement errorElement = driver.findElement(errorMessage);
+        return errorElement.getText();
+    }
+
+
 
 
 
