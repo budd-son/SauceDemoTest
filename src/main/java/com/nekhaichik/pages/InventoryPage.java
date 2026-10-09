@@ -55,4 +55,7 @@ public class InventoryPage {
         );
         return badge.getText();
     }
+    public void clickCartButton() {
+        driver.findElement(shoppingCart).click();
+    }
 }
