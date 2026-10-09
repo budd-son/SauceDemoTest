@@ -44,9 +44,18 @@ public class InventoryPage {
         );
     }
 
-    public InventoryPage addToCartButton(String itemName) {
+    public InventoryPage addToCart(String itemName) {
         driver.findElement(itemButton(itemName)).click();
         return this;
+    }
+
+    public InventoryPage removeFromCart(String itemName) {
+        driver.findElement(itemButton(itemName)).click();
+        return this;
+    }
+
+    public String getItemButtonText(String itemName) {
+        return driver.findElement(itemButton(itemName)).getText();
     }
     public String getCartBadgeText() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
