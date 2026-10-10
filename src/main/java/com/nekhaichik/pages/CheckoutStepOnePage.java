@@ -1,24 +1,28 @@
 package com.nekhaichik.pages;
 
+import com.nekhaichik.component.HeaderComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CheckoutStepOnePage {
     private final WebDriver driver;
+    private final HeaderComponent header;
     private final By firstName = By.id("first-name");
     private final By lastName = By.id("last-name");
     private final By postalCode = By.id("postal-code");
     private final By buttonContinue = By.id("continue");
+    private final By cancelButton = By.cssSelector("[data-test='cancel']");
     private By errorMessage = By.xpath("//*[contains(text(),'Error:')]");
     public CheckoutStepOnePage(WebDriver driver) {
         this.driver = driver;
+        this.header = new HeaderComponent(driver);
     }
-    public CheckoutStepOnePage openCheckoutStepOne()
-    {
-       driver.get("https://www.saucedemo.com/checkout-step-one.html");
-       return this;
+    public HeaderComponent header() {
+        return header;
     }
+
     public CheckoutStepOnePage inputFirstName(String firstName) {
         WebElement input = driver.findElement(this.firstName);
         input.clear();
@@ -45,4 +49,9 @@ public class CheckoutStepOnePage {
         WebElement errorElement = driver.findElement(errorMessage);
         return errorElement.getText();
     }
+    public CartPage clickCancel() {
+        driver.findElement(cancelButton).click();
+        return new CartPage(driver);
+    }
+
 }

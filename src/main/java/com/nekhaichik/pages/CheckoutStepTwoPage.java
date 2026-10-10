@@ -5,37 +5,39 @@ import org.openqa.selenium.WebDriver;
 
 public class CheckoutStepTwoPage {
     WebDriver driver;
-    private final By totalPrice = By.cssSelector("total-price");
-    private final By taxPrice = By.cssSelector("tax-label");
-    private final By subTotalPrice = By.cssSelector("subtotal-label");
-    private final By finish = By.id("finish");
+    private By burgerMenu = By.id("react-burger-menu-btn");
 
+    private final By totalLabel    = By.cssSelector(".summary_total_label");
+    private final By taxLabel      = By.cssSelector(".summary_tax_label");
+    private final By subtotalLabel = By.cssSelector(".summary_subtotal_label");
+    private final By finish = By.id("finish");
+    private final By buttonBack = By.id("cancel");
     public CheckoutStepTwoPage(WebDriver driver) {
         this.driver = driver;
     }
-    public CheckoutStepTwoPage openCheckoutStepTwoPage()
-    {
-        driver.get("https://www.saucedemo.com/checkout-step-two.html");
-        return this;
-    }
+
     public Double getSubTotalSum(){
         return Double.parseDouble(
-                driver.findElement(subTotalPrice)
+                driver.findElement(subtotalLabel)
                         .getText()
-                        .replaceAll("\\$",""));
+                        .replaceAll("[^0-9.]", ""));
     }
     public Double getTotalSum(){
-        return Double.parseDouble(driver.findElement(taxPrice)
+        return Double.parseDouble(driver.findElement(totalLabel)
                 .getText()
-                .replaceAll("\\$",""));
+                .replaceAll("[^0-9.]", ""));
     }
     public Double getTaxSum(){
-        return Double.parseDouble(driver.findElement(taxPrice)
+        return Double.parseDouble(driver.findElement(taxLabel)
                 .getText()
-                .replaceAll("\\$",""));
+                .replaceAll("[^0-9.]", ""));
     }
     public CheckoutCompletePage finish(){
         driver.findElement(finish).click();
         return new CheckoutCompletePage(driver);
+    }
+    public CartPage cancelClick() {
+        driver.findElement(buttonBack).click();
+        return new CartPage(driver);
     }
 }

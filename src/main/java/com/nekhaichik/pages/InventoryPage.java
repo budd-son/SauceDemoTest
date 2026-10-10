@@ -1,27 +1,23 @@
 package com.nekhaichik.pages;
 
+import com.nekhaichik.component.HeaderComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class InventoryPage {
     private final WebDriver driver;
-    private By inventoryContainer = By.id("inventory_container");
     private By productSort = By.xpath("//*[@class='product_sort_container']");
-    private By shoppingCart = By.cssSelector(".shopping_cart_link");
+    private final HeaderComponent header;
     public InventoryPage(WebDriver driver) {
         this.driver = driver;
+        this.header = new HeaderComponent(driver);
     }
-    public InventoryPage open() {
-        driver.get("https://www.saucedemo.com/inventory.html");
-        return this;
+    public HeaderComponent header() {
+        return header;
     }
     public List<Double> getItemPrices() {
         List<WebElement> priceElements = driver.findElements(By.cssSelector(".inventory_item_price"));
@@ -57,14 +53,5 @@ public class InventoryPage {
     public String getItemButtonText(String itemName) {
         return driver.findElement(itemButton(itemName)).getText();
     }
-    public String getCartBadgeText() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement badge = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(shoppingCart)
-        );
-        return badge.getText();
-    }
-    public void clickCartButton() {
-        driver.findElement(shoppingCart).click();
-    }
+
 }
