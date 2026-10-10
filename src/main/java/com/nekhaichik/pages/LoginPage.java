@@ -30,8 +30,9 @@ public class LoginPage {
         return this;
     }
 
-    public void clickLoginButton(){
+    public LoginPage clickLoginButton(){
         driver.findElement(loginButton).click();
+        return this;
     }
     public InventoryPage login(String username, String password) {
         enterUserName(username);
@@ -43,9 +44,6 @@ public class LoginPage {
         WebElement errorElement = driver.findElement(errorMessage);
         return errorElement.getText();
     }
-
-
-
 
 
 
