@@ -4,8 +4,10 @@ import com.nekhaichik.component.HeaderComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +17,7 @@ public class CartPage {
 
     private final By cartItems     = By.cssSelector(".cart_item");
     private final By cartItemNames = By.cssSelector(".inventory_item_name");
-    private final By checkout = By.cssSelector("[data-test='checkout']");
+    private final By checkout = By.xpath("//button[contains(text(),'Checkout')]");
     private By continueShoppingBtn = By.xpath("//button[@data-test='continue-shopping']");
     public CartPage(WebDriver driver) {
         this.driver = driver;
@@ -46,7 +48,8 @@ public class CartPage {
         return this;
     }
     public CheckoutStepOnePage openCheckout() {
-        driver.findElement(checkout).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(checkout)).click();
         return new CheckoutStepOnePage(driver);
     }
     public InventoryPage continueShopping() {

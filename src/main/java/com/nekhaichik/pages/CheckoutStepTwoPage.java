@@ -5,10 +5,9 @@ import org.openqa.selenium.WebDriver;
 
 public class CheckoutStepTwoPage {
     WebDriver driver;
-    private By burgerMenu = By.id("react-burger-menu-btn");
 
-    private final By totalLabel    = By.cssSelector(".summary_total_label");
-    private final By taxLabel      = By.cssSelector(".summary_tax_label");
+    private final By totalLabel = By.cssSelector(".summary_total_label");
+    private final By taxLabel = By.cssSelector(".summary_tax_label");
     private final By subtotalLabel = By.cssSelector(".summary_subtotal_label");
     private final By finish = By.id("finish");
     private final By buttonBack = By.id("cancel");
