@@ -12,7 +12,10 @@ public class BaseTest {
     {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--incognito");  // режим инкогнито
+        if (Boolean.getBoolean("headless")){
+            options.addArguments("--headless=new");
+        }
+        options.addArguments("--incognito");
         driver = new ChromeDriver(options);
 
         driver.manage().window().maximize();

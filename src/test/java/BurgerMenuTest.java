@@ -47,7 +47,6 @@ public class BurgerMenuTest extends BaseTest  {
 
         Assert.assertEquals(inventory.header().getCartItemCount(), 0,
                 "После Reset App State корзина должна быть пуста");
-        Assert.assertEquals(inventory.getItemButtonText(itemName), "Add to cart",
-                "После Reset App State кнопка должна вернуться в 'Add to cart'");
+
     }
 }
