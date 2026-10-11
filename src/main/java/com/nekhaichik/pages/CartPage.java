@@ -53,5 +53,8 @@ public class CartPage {
         driver.findElement(continueShoppingBtn).click();
         return new InventoryPage(driver);
     }
+    public boolean isCartEmpty() {
+        return driver.findElements(cartItems).isEmpty();
+    }
 
 }
