@@ -13,13 +13,13 @@ import java.time.Duration;
 public class HeaderComponent {
     private final WebDriver driver;
 
-    private final By cartLink        = By.cssSelector(".shopping_cart_link");
-    private final By cartBadge       = By.cssSelector(".shopping_cart_badge");
+    private final By cartLink = By.cssSelector(".shopping_cart_link");
+    private final By cartBadge = By.cssSelector(".shopping_cart_badge");
     private final By burgerMenuButton = By.id("react-burger-menu-btn");
-    private final By closeButton     = By.cssSelector(".bm-cross-button");
-    private final By logoutLink      = By.id("logout_sidebar_link");
-    private final By aboutLink       = By.id("about_sidebar_link");
-
+    private final By closeButton = By.cssSelector(".bm-cross-button");
+    private final By logoutLink = By.id("logout_sidebar_link");
+    private final By aboutLink = By.id("about_sidebar_link");
+    private final By resetLink = By.id("reset_sidebar_link");
     public HeaderComponent(WebDriver driver) {
         this.driver = driver;
     }
@@ -66,5 +66,10 @@ public class HeaderComponent {
 
     public void openAbout() {
         driver.findElement(aboutLink).click();
+    }
+
+    public HeaderComponent resetAppState() {
+        driver.findElement(resetLink).click();
+        return this;
     }
 }

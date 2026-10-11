@@ -45,6 +45,10 @@ public class CheckoutStepOnePage {
         driver.findElement(buttonContinue).click();
         return new CheckoutStepTwoPage(driver);
     }
+    public CheckoutStepOnePage clickContinueExpectingError() {
+        driver.findElement(buttonContinue).click();
+        return this;
+    }
     public String getError() {
         WebElement errorElement = driver.findElement(errorMessage);
         return errorElement.getText();
