@@ -28,3 +28,4 @@ public class CheckoutFlowTest extends BaseTest{
         Assert.assertEquals(actualHeader, completeHeader, "Headers don't match");
     }
 }
+

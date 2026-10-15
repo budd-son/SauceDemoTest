@@ -11,6 +11,7 @@ public class CheckoutCompletePage extends BasePage {
     private final By generatePDFButton = By.cssSelector("[data-test ='generate-pdf-order']");
     private final By completeHeader = By.cssSelector(".complete-header");
 
+
     public CheckoutCompletePage(WebDriver driver) {
         super(driver);
         this.header = new HeaderComponent(driver);

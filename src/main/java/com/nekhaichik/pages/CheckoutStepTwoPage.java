@@ -39,6 +39,7 @@ public class CheckoutStepTwoPage extends BasePage {
         log.debug("Total Sum is: {}", result);
         return result;
     }
+
     public Double getTaxSum(){
         Double result =Double.parseDouble(driver.findElement(taxLabel)
                 .getText()

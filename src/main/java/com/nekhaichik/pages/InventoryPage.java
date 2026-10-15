@@ -16,6 +16,7 @@ public class InventoryPage extends BasePage {
         this.header = new HeaderComponent(driver);
         log.info("InventoryPage opened");
     }
+
     public HeaderComponent header() {
         return header;
     }

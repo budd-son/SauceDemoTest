@@ -15,6 +15,7 @@ public class BaseTest {
         if (Boolean.getBoolean("headless")){
             options.addArguments("--headless=new");
         }
+
         options.addArguments("--incognito");
         driver = new ChromeDriver(options);
 

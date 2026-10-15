@@ -38,6 +38,7 @@ public class CartPage extends BasePage {
         return getCartItemNames().contains(itemName);
     }
 
+
     private By itemButton(String itemName) {
         return By.xpath(
                 "//div[@class='cart_list'][.//div[text()='" + itemName + "']]//button"

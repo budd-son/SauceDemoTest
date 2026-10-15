@@ -32,3 +32,4 @@ public class CartPageTest extends BaseTest {
                 "После удаления корзина должна быть пуста");
     }
 }
+

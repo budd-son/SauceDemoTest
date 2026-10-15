@@ -32,6 +32,7 @@ public class LoginPage extends BasePage {
         return this;
     }
 
+
     public LoginPage clickLoginButton(){
         driver.findElement(loginButton).click();
         log.debug("Clicked login button");

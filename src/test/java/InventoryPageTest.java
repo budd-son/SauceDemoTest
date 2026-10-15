@@ -63,3 +63,4 @@ public class InventoryPageTest extends BaseTest{
     }
 
 }
+

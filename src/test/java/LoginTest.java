@@ -26,3 +26,4 @@ public class LoginTest extends BaseTest{
         Assert.assertEquals(error, expectedError, "Текст ошибки не совпадает");
     }
 }
+

@@ -21,6 +21,7 @@ public abstract class BasePage {
         this.log = LogManager.getLogger(this.getClass());
     }
 
+
     protected void click(By locator) {
         log.info("Click: {}", locator);
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();

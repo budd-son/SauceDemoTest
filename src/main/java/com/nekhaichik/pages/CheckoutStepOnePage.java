@@ -48,6 +48,7 @@ public class CheckoutStepOnePage  extends CheckoutStepTwoPage {
         log.debug("Input Postal Code : {}", postalCode);
         return this;
     }
+
     public CheckoutStepTwoPage clickContinue() {
         driver.findElement(buttonContinue).click();
         wait.until(ExpectedConditions.urlContains("/checkout-step-two.html"));
