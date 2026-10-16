@@ -16,6 +16,9 @@ public class CartPage extends BaseLoggedInPage {
     private final By cartItemNames = By.cssSelector(".inventory_item_name");
     private final By checkout = By.xpath("//button[contains(text(),'Checkout')]");
     private final By continueShoppingBtn = By.xpath("//button[@data-test='continue-shopping']");
+    private  final String itemButton =
+            "//div[@class='cart_list'][.//div[normalize-space()=%s]]//button";
+
     public CartPage(WebDriver driver) {
         super(driver);
         wait.until(ExpectedConditions.urlContains("/cart.html"));
@@ -30,35 +33,22 @@ public class CartPage extends BaseLoggedInPage {
                 .collect(Collectors.toList());
     }
 
-    public boolean containsCartItem(String itemName) {
-        return getCartItemNames().contains(itemName);
-    }
-
-    private By itemButton(String itemName) {
-        return By.xpath(
-                "//div[@class='cart_list'][.//div[text()='" + itemName + "']]//button"
-        );
-    }
-
     public CartPage removeItem(String itemName) {
-        click(itemButton(itemName));
+        click(byText(itemButton, itemName));
         log.debug("Removing item {}", itemName);
         return this;
     }
-    public CheckoutStepOnePage openCheckout() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(checkout)).click();
-        log.debug("Checkout page opened");
-        return new CheckoutStepOnePage(driver);
-    }
-    public InventoryPage continueShopping() {
-        click(continueShoppingBtn);
-        log.debug("Continue shopping page opened");
-        return new InventoryPage(driver);
-    }
+
     public boolean isCartEmpty() {
         log.debug("Cart page is empty");
         return driver.findElements(cartItems).isEmpty();
     }
 
+    public void clickCheckout() {
+        click(checkout);
+    }
+
+    public void clickContinueShopping() {
+        click(continueShoppingBtn);
+    }
 }
