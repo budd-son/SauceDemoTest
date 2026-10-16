@@ -18,6 +18,7 @@
         </File>
     </Appenders>
 
+
     <Loggers>
         <Logger name="org.openqa.selenium" level="WARN"/>
         <Logger name="io.github.bonigarcia" level="WARN"/>
