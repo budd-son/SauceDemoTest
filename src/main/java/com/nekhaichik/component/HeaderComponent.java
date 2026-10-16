@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.Duration;
+import java.util.List;
 
 public class HeaderComponent {
     private final WebDriver driver;
@@ -44,8 +45,10 @@ public class HeaderComponent {
 
     public boolean isCartBadgeDisplayed() {
         log.debug("Check is cart badge");
-        return !driver.findElements(cartBadge).isEmpty();
+        List<WebElement> badges = driver.findElements(cartBadge);
+        return !badges.isEmpty() && badges.getFirst().isDisplayed();
     }
+    //isDisplayed() выбрасывал NoSuchElement поэтому просто проверяла отображение в DOM
 
     public CartPage openCart() {
         driver.findElement(cartLink).click();
