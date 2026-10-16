@@ -18,6 +18,7 @@ public class CartPage extends BaseLoggedInPage {
     private final By continueShoppingBtn = By.xpath("//button[@data-test='continue-shopping']");
     public CartPage(WebDriver driver) {
         super(driver);
+        wait.until(ExpectedConditions.urlContains("/cart.html"));
         log.info("Cart page opened");
     }
 
@@ -40,20 +41,18 @@ public class CartPage extends BaseLoggedInPage {
     }
 
     public CartPage removeItem(String itemName) {
-        driver.findElement(itemButton(itemName)).click();
+        click(itemButton(itemName));
         log.debug("Removing item {}", itemName);
         return this;
     }
     public CheckoutStepOnePage openCheckout() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(checkout)).click();
-        wait.until(ExpectedConditions.urlContains("/checkout-step-one.html"));
         log.debug("Checkout page opened");
         return new CheckoutStepOnePage(driver);
     }
     public InventoryPage continueShopping() {
-        driver.findElement(continueShoppingBtn).click();
-        wait.until(ExpectedConditions.urlContains("/inventory.html"));
+        click(continueShoppingBtn);
         log.debug("Continue shopping page opened");
         return new InventoryPage(driver);
     }

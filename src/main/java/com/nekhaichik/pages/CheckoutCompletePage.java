@@ -1,9 +1,7 @@
 package com.nekhaichik.pages;
 
-import com.nekhaichik.component.HeaderComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class CheckoutCompletePage extends BaseLoggedInPage {
     private final By backHomeButton = By.cssSelector("[data-test ='back-to-product']");
@@ -15,9 +13,7 @@ public class CheckoutCompletePage extends BaseLoggedInPage {
         log.info("Checkout complete page opened");
     }
     public InventoryPage clickBackHomeButton(){
-        driver.findElement(backHomeButton).click();
-        wait.until(ExpectedConditions.urlContains("/inventory.html"));
-
+        click(backHomeButton);
         log.debug("Click Back Home button to cart");
         return new InventoryPage(driver);
     }

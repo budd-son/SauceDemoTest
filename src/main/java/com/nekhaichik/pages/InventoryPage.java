@@ -4,14 +4,16 @@ import com.nekhaichik.component.HeaderComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class InventoryPage extends BaseLoggedInPage {
-    private By productSort = By.xpath("//*[@class='product_sort_container']");
+    private final By productSort = By.xpath("//*[@class='product_sort_container']");
     public InventoryPage(WebDriver driver) {
         super(driver);
+        wait.until(ExpectedConditions.urlContains("/inventory.html"));
         log.info("InventoryPage opened");
     }
 
@@ -19,7 +21,7 @@ public class InventoryPage extends BaseLoggedInPage {
         List<WebElement> priceElements = driver.findElements(By.cssSelector(".inventory_item_price"));
         log.debug("In InventoryPage getItemPrices");
         return priceElements.stream()
-                .map(element -> element.getText())
+                .map(WebElement::getText)
                 .map(text -> text.replace("$", ""))
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
@@ -40,13 +42,13 @@ public class InventoryPage extends BaseLoggedInPage {
     }
 
     public InventoryPage addToCart(String itemName) {
-        driver.findElement(itemButton(itemName)).click();
+        click(itemButton(itemName));
         log.debug(" InventoryPage add to cart {}", itemName);
         return this;
     }
 
     public InventoryPage removeFromCart(String itemName) {
-        driver.findElement(itemButton(itemName)).click();
+        click(itemButton(itemName));
         log.debug(" InventoryPage remove from cart {}", itemName);
         return this;
     }

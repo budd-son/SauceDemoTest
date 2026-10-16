@@ -13,9 +13,10 @@ public class CheckoutStepOnePage  extends BaseLoggedInPage {
     private final By postalCode = By.id("postal-code");
     private final By buttonContinue = By.id("continue");
     private final By cancelButton = By.cssSelector("[data-test='cancel']");
-    private By errorMessage = By.xpath("//*[contains(text(),'Error:')]");
+    private final By errorMessage = By.xpath("//*[contains(text(),'Error:')]");
     public CheckoutStepOnePage(WebDriver driver) {
         super(driver);
+        wait.until(ExpectedConditions.urlContains("/checkout-step-one.html"));
         log.info("Checkout Step One Page");
     }
 
@@ -41,14 +42,12 @@ public class CheckoutStepOnePage  extends BaseLoggedInPage {
         return this;
     }
     public CheckoutStepTwoPage clickContinue() {
-        driver.findElement(buttonContinue).click();
-        wait.until(ExpectedConditions.urlContains("/checkout-step-two.html"));
-
+        click(buttonContinue);
         log.debug("Click Continue");
         return new CheckoutStepTwoPage(driver);
     }
     public CheckoutStepOnePage clickContinueExpectingError() {
-        driver.findElement(buttonContinue).click();
+        click(buttonContinue);
         log.debug("Click Continue with some empty field");
         return this;
     }
@@ -58,9 +57,7 @@ public class CheckoutStepOnePage  extends BaseLoggedInPage {
         return errorElement.getText();
     }
     public CartPage clickCancel() {
-        driver.findElement(cancelButton).click();
-        wait.until(ExpectedConditions.urlContains("/cart.html"));
-
+        click(cancelButton);
         log.debug("Click Cancel comeback to cart");
         return new CartPage(driver);
     }

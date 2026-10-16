@@ -5,15 +5,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class LoginPage extends BasePage {
-    private By usernameInput = By.id("user-name");
-    private By passwordInput = By.id("password");
-    private By loginButton = By.id("login-button");
-    private By errorMessage = By.xpath("//*[contains(text(),'Epic sadface')]");
+    protected static final String BASE_URL = "https://www.saucedemo.com/";
+    private final By usernameInput = By.id("user-name");
+    private final By passwordInput = By.id("password");
+    private final By loginButton = By.id("login-button");
+    private final By errorMessage = By.xpath("//*[contains(text(),'Epic sadface')]");
     public LoginPage(WebDriver driver) {
         super(driver);
     }
     public LoginPage openLoginPage() {
-        driver.get("https://www.saucedemo.com/");
+        driver.get(BASE_URL);
         log.info("Opening login page");
         return this;
     }
@@ -33,7 +34,7 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage clickLoginButton(){
-        driver.findElement(loginButton).click();
+        click(loginButton);
         log.debug("Clicked login button");
         return this;
     }

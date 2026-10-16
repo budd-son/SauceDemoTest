@@ -13,6 +13,7 @@ public class CheckoutStepTwoPage extends BaseLoggedInPage {
     private final By buttonBack = By.id("cancel");
     public CheckoutStepTwoPage(WebDriver driver) {
         super(driver);
+        wait.until(ExpectedConditions.urlContains("/checkout-step-two.html"));
         log.info("Checkout Step Two Page  opened");
     }
 
@@ -42,16 +43,12 @@ public class CheckoutStepTwoPage extends BaseLoggedInPage {
         return result;
     }
     public CheckoutCompletePage finish(){
-        driver.findElement(finish).click();
-        wait.until(ExpectedConditions.urlContains("/checkout-complete.html"));
-
+        click(finish);
         log.debug("Click finish  go to complete page");
         return new CheckoutCompletePage(driver);
     }
     public CartPage cancelClick() {
-        driver.findElement(buttonBack).click();
-        wait.until(ExpectedConditions.urlContains("/cart.html"));
-
+        click(buttonBack);
         log.debug("Click Cancel comeback to cart");
         return new CartPage(driver);
     }
