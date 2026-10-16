@@ -1,66 +1,59 @@
-import com.nekhaichik.pages.InventoryPage;
-import com.nekhaichik.pages.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collector;
 
-public class InventoryPageTest extends BaseTest{
-    protected InventoryPage inventoryPage;
-    protected String itemName = "Sauce Labs Backpack" ;
+public class InventoryPageTest extends BaseTest {
+
+    private static final String ITEM_NAME = "Sauce Labs Backpack";
+    private static final String ADD_TO_CART = "Add to cart";
+    private static final String REMOVE = "Remove";
 
     @BeforeMethod
-    public void login(){
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.openLoginPage();
-        inventoryPage = loginPage.login("standard_user","secret_sauce");
+    public void loginBeforeMethod() {
+        loginSteps.openLoginPage().loginAs(USERNAME, PASSWORD);
     }
-    @Test
-    public void sortingByPriceLohi(){
-        inventoryPage.selectSortOption("Price (low to high)");
-        List<Double> actual = inventoryPage.getItemPrices();
+
+    @DataProvider(name = "sortOptions")
+    public Object[][] sortOptions() {
+        return new Object[][] {
+                { "Price (low to high)", Comparator.<Double>naturalOrder() },
+                { "Price (high to low)", Comparator.<Double>reverseOrder() }
+        };
+    }
+
+    @Test(dataProvider = "sortOptions")
+    public void sortingByPrice(String option, Comparator<Double> comparator) {
+        inventorySteps.sortBy(option);
+
+        List<Double> actual = inventorySteps.getItemPrices();
         List<Double> expected = new ArrayList<>(actual);
-        Collections.sort(expected);
-        Assert.assertEquals(actual, expected, "Цены отсортированы неверно");
+        expected.sort(comparator);
+
+        Assert.assertEquals(actual, expected,
+                "Prices are not sorted correctly for option: " + option);
     }
     @Test
-    public void sortingByPriceHilo(){
-        inventoryPage.selectSortOption("Price (high to low)");
-        List<Double> actual = inventoryPage.getItemPrices();
-        List<Double> expected = new ArrayList<>(actual);
-        expected.sort(Collections.reverseOrder());
-        Assert.assertEquals(actual, expected, "Цены отсортированы неверно");
-    }
-    @Test
-    public void addItemChangeIconCart() {
-        inventoryPage.addToCart(itemName);
-        Assert.assertEquals(inventoryPage.header().getCartItemCount(), 1,
-                "После добавления товара счётчик должен быть 1");
+    public void addingItemIncrementsCartBadge() {
+        inventorySteps.addToCart(ITEM_NAME);
+
+        Assert.assertEquals(inventorySteps.getCartItemCount(), 1,
+                "Cart badge should be 1 after adding one item");
     }
 
     @Test
-    public void addItemChangeBtnToRemove(){
-        String before = inventoryPage.getItemButtonText(itemName);
-        Assert.assertEquals(before, "Add to cart",
-                "До добавления кнопка должна называться 'Add to cart'");
+    public void itemButtonChangesToRemoveAfterAdding() {
+        Assert.assertEquals(inventorySteps.getItemButtonText(ITEM_NAME), ADD_TO_CART,
+                "Button should be 'Add to cart' before adding");
 
-        inventoryPage.addToCart(itemName);
+        inventorySteps.addToCart(ITEM_NAME);
 
-        String after = inventoryPage.getItemButtonText(itemName);
-        Assert.assertEquals(after, "Remove",
-                "После добавления кнопка должна называться 'Remove'");
-    }
-
-    @Test
-    public void buttonChangesToRemoveAfterAdd() {
-        Assert.assertEquals(inventoryPage.getItemButtonText(itemName), "Add to cart");
-        inventoryPage.addToCart(itemName);
-        Assert.assertEquals(inventoryPage.getItemButtonText(itemName), "Remove");
+        Assert.assertEquals(inventorySteps.getItemButtonText(ITEM_NAME), REMOVE,
+                "Button should be 'Remove' after adding");
     }
 
 }
-

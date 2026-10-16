@@ -2,19 +2,23 @@ package com.nekhaichik.component;
 
 import com.nekhaichik.pages.CartPage;
 import com.nekhaichik.pages.LoginPage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import java.time.Duration;
+import java.util.List;
 
 
 public class HeaderComponent {
     private final WebDriver driver;
-    Logger log ;
+    private final WebDriverWait wait;
+    private final Logger log = LogManager.getLogger(HeaderComponent.class);
+
     private final By cartLink = By.cssSelector(".shopping_cart_link");
     private final By cartBadge = By.cssSelector(".shopping_cart_badge");
     private final By burgerMenuButton = By.id("react-burger-menu-btn");
@@ -22,66 +26,72 @@ public class HeaderComponent {
     private final By logoutLink = By.id("logout_sidebar_link");
     private final By aboutLink = By.id("about_sidebar_link");
     private final By resetLink = By.id("reset_sidebar_link");
+
     public HeaderComponent(WebDriver driver) {
         this.driver = driver;
-        this.log = LogManager.getLogger(this.getClass());
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    private void click(By locator) {
+        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
     public String getCartBadgeText() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement badge = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(cartBadge)
-        );
-        log.debug("Get badge text {}", badge.getText());
-        return badge.getText();
+        String text = wait.until(ExpectedConditions.visibilityOfElementLocated(cartBadge)).getText();
+        log.debug("Cart badge text: {}", text);
+        return text;
     }
+
     public int getCartItemCount() {
-        if (driver.findElements(cartBadge).isEmpty()) {
+        List<WebElement> badges = driver.findElements(cartBadge);
+        if (badges.isEmpty()) {
             return 0;
         }
-        log.debug("Get cart item count {}", driver.findElements(cartBadge).size());
-        return Integer.parseInt(driver.findElement(cartBadge).getText());
+        int count = Integer.parseInt(badges.get(0).getText());
+        log.debug("Cart item count: {}", count);
+        return count;
     }
 
     public boolean isCartBadgeDisplayed() {
-        log.debug("Check is cart badge");
-        return !driver.findElements(cartBadge).isEmpty();
+        List<WebElement> badges = driver.findElements(cartBadge);
+        return !badges.isEmpty() && badges.get(0).isDisplayed();
     }
 
     public CartPage openCart() {
-        driver.findElement(cartLink).click();
+        click(cartLink);
         log.debug("Open cart page");
         return new CartPage(driver);
     }
 
     public HeaderComponent openBurgerMenu() {
-        driver.findElement(burgerMenuButton).click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        click(burgerMenuButton);
         wait.until(ExpectedConditions.visibilityOfElementLocated(logoutLink));
-        log.debug("Open burger menu page");
+        log.debug("Burger menu opened");
         return this;
     }
 
     public HeaderComponent closeBurgerMenu() {
-        driver.findElement(closeButton).click();
-        log.debug("Close burger menu page");
+        click(closeButton);
+        log.debug("Burger menu closed");
         return this;
     }
 
     public LoginPage logout() {
-        driver.findElement(logoutLink).click();
-        log.debug("Logout page");
+        click(logoutLink);
+        log.debug("Logout");
         return new LoginPage(driver);
     }
 
     public void openAbout() {
-        driver.findElement(aboutLink).click();
-        log.debug("Open about page");
+        click(aboutLink);
+        wait.until(ExpectedConditions.urlContains("saucelabs.com"));
+        log.debug("About page opened");
     }
 
     public HeaderComponent resetAppState() {
-        driver.findElement(resetLink).click();
-        log.debug("Reset state page");
+        click(resetLink);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(cartBadge));
+        log.debug("App state reset");
         return this;
     }
 }

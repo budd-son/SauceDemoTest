@@ -5,61 +5,40 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class CheckoutStepTwoPage extends BasePage {
-    private HeaderComponent header;
+public class CheckoutStepTwoPage extends BaseLoggedInPage {
     private final By totalLabel = By.cssSelector(".summary_total_label");
     private final By taxLabel = By.cssSelector(".summary_tax_label");
     private final By subtotalLabel = By.cssSelector(".summary_subtotal_label");
     private final By finish = By.id("finish");
     private final By buttonBack = By.id("cancel");
+
     public CheckoutStepTwoPage(WebDriver driver) {
         super(driver);
-        this.header = new HeaderComponent(driver);
-        log.info("Checkout Step Two Page  opened");
-    }
-    public HeaderComponent header()
-    {
-        return header;
+        wait.until(ExpectedConditions.urlContains("/checkout-step-two.html"));
     }
 
-    public Double getSubTotalSum(){
-        Double result =Double.parseDouble(
-                driver.findElement(subtotalLabel)
-                        .getText()
-                        .replaceAll("[^0-9.]", ""));
-        log.debug("Subtotal Sum is: {}", result);
-
-        return result;
-
-    }
-    public Double getTotalSum(){
-        Double result =Double.parseDouble(driver.findElement(totalLabel)
-                .getText()
-                .replaceAll("[^0-9.]", ""));
-        log.debug("Total Sum is: {}", result);
-        return result;
+    public void clickFinish() {
+        click(finish);
     }
 
-    public Double getTaxSum(){
-        Double result =Double.parseDouble(driver.findElement(taxLabel)
-                .getText()
-                .replaceAll("[^0-9.]", ""));
-        log.debug("Tax Sum is: {}", result);
-
-        return result;
+    public void clickCancel() {
+        click(buttonBack);
     }
-    public CheckoutCompletePage finish(){
-        driver.findElement(finish).click();
-        wait.until(ExpectedConditions.urlContains("/checkout-complete.html"));
 
-        log.debug("Click finish  go to complete page");
-        return new CheckoutCompletePage(driver);
+    public double getSubTotal() {
+        return parseMoney(getText(subtotalLabel));
     }
-    public CartPage cancelClick() {
-        driver.findElement(buttonBack).click();
-        wait.until(ExpectedConditions.urlContains("/cart.html"));
 
-        log.debug("Click Cancel comeback to cart");
-        return new CartPage(driver);
+    public double getTax(){
+        return parseMoney(getText(taxLabel));
+    }
+
+    public double getTotal(){
+        return parseMoney(getText(totalLabel));
+
+    }
+
+    private double parseMoney(String text) {
+        return Double.parseDouble(text.replaceAll("[^0-9.]", ""));
     }
 }

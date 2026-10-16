@@ -1,29 +1,24 @@
-import com.nekhaichik.pages.InventoryPage;
-import com.nekhaichik.pages.LoginPage;
+import com.nekhaichik.steps.InventorySteps;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class LoginTest extends BaseTest{
-    @Test
-    public void positiveLogin(){
-        LoginPage loginPage = new LoginPage(driver);
-        InventoryPage inventoryPage = loginPage
-                .openLoginPage()
-                .login("standard_user", "secret_sauce");
-        Assert.assertTrue(driver.getCurrentUrl().contains("/inventory.html"),
-                "URL должен содержать inventory.html, текущий:" + driver.getCurrentUrl());
+public class LoginTest extends BaseTest {
 
-    }
     @Test
-    public void negativeLoginWithWrongPassword(){
-        String error = new LoginPage(driver)
-                .openLoginPage()
-                .enterUserName("standard_user")
-                .enterPassword("wrong_password")
-                .clickLoginButton()
-                .getError();
-        String expectedError = "Epic sadface: Username and password do not match any user in this service";
-        Assert.assertEquals(error, expectedError, "Текст ошибки не совпадает");
+    public void userCanLoginWithValidCredentials() {
+        InventorySteps inventory = loginSteps.openLoginPage().loginAs(USERNAME, PASSWORD);
+
+        Assert.assertTrue(inventory.isOpened(),
+                "Inventory page should be opened after successful login");
+    }
+
+    @Test
+    public void userCannotLoginWithWrongPassword() {
+        loginSteps.openLoginPage().loginAs(USERNAME, "wrong_password");
+
+        Assert.assertEquals(loginSteps.getErrorMessage(),
+                "Epic sadface: Username and password do not match any user in this service",
+                "Error message does not match");
     }
 }
 
