@@ -17,6 +17,7 @@ public abstract class BasePage {
 
     protected BasePage(WebDriver driver) {
         this.driver = driver;
+
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.log = LogManager.getLogger(this.getClass());
     }
@@ -38,9 +39,6 @@ public abstract class BasePage {
         return text;
     }
 
-    protected boolean isPresent(By locator) {
-        return !driver.findElements(locator).isEmpty();
-    }
     protected void waitForUrl(String s) {
         log.info("Wait for URL contains: {}", s);
         wait.until(ExpectedConditions.urlContains(s));
