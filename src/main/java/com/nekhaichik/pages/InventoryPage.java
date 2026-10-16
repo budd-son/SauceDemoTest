@@ -1,31 +1,30 @@
 package com.nekhaichik.pages;
 
-import com.nekhaichik.component.HeaderComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class InventoryPage extends BaseLoggedInPage {
     private final By productSort = By.xpath("//*[@class='product_sort_container']");
+    private  final By itemPrices = By.cssSelector(".inventory_item_price")
+    private  final String itemButton =
+            "//div[@class='inventory_item'][.//div[normalize-space()=%s]]//button";
     public InventoryPage(WebDriver driver) {
         super(driver);
-        wait.until(ExpectedConditions.urlContains("/inventory.html"));
+        waitForUrl("/inventory.html");
         log.info("InventoryPage opened");
     }
 
     public List<Double> getItemPrices() {
-        List<WebElement> priceElements = driver.findElements(By.cssSelector(".inventory_item_price"));
-        log.debug("In InventoryPage getItemPrices");
-        return priceElements.stream()
+        log.debug("Get item prices");
+        return driver.findElements(itemPrices).stream()
                 .map(WebElement::getText)
                 .map(text -> text.replace("$", ""))
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
-
     }
 
     public InventoryPage selectSortOption(String text){
@@ -35,26 +34,14 @@ public class InventoryPage extends BaseLoggedInPage {
         return this;
     }
 
-    private By itemButton(String itemName) {
-        return By.xpath(
-                "//div[@class='inventory_item'][.//div[text()='" + itemName + "']]//button"
-        );
-    }
-
-    public InventoryPage addToCart(String itemName) {
-        click(itemButton(itemName));
-        log.debug(" InventoryPage add to cart {}", itemName);
-        return this;
-    }
-
-    public InventoryPage removeFromCart(String itemName) {
-        click(itemButton(itemName));
-        log.debug(" InventoryPage remove from cart {}", itemName);
+    public InventoryPage clickItemButton(String itemName) {
+        log.debug("Click item button: {}", itemName);
+        click(byText(itemButton, itemName));
         return this;
     }
 
     public String getItemButtonText(String itemName) {
-        return driver.findElement(itemButton(itemName)).getText();
+        return getText(byText(itemButton, itemName));
     }
 
 }
