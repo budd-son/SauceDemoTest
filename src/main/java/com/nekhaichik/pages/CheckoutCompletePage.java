@@ -12,14 +12,13 @@ public class CheckoutCompletePage extends BaseLoggedInPage {
         super(driver);
         log.info("Checkout complete page opened");
     }
-    public InventoryPage clickBackHomeButton(){
+    public void clickBackHomeButton(){
         click(backHomeButton);
         log.debug("Click Back Home button to cart");
-        return new InventoryPage(driver);
     }
 
     public String getCompleteHeader() {
-        String headerText = driver.findElement(completeHeader).getText();
+        String headerText = getText(completeHeader);
         log.debug("Get header text {}", headerText);
         return headerText;
     }

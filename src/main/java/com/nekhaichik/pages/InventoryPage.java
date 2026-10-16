@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class InventoryPage extends BaseLoggedInPage {
     private final By productSort = By.xpath("//*[@class='product_sort_container']");
-    private  final By itemPrices = By.cssSelector(".inventory_item_price")
+    private  final By itemPrices = By.cssSelector(".inventory_item_price");
     private  final String itemButton =
             "//div[@class='inventory_item'][.//div[normalize-space()=%s]]//button";
     public InventoryPage(WebDriver driver) {
