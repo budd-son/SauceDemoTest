@@ -10,7 +10,6 @@ public class CheckoutCompletePage extends BaseLoggedInPage {
 
     public CheckoutCompletePage(WebDriver driver) {
         super(driver);
-        log.info("Checkout complete page opened");
     }
     public void clickBackHomeButton(){
         click(backHomeButton);

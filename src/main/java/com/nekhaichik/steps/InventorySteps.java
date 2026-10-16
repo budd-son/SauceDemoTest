@@ -1,35 +1,64 @@
 package com.nekhaichik.steps;
 
-import com.nekhaichik.pages.CartPage;
-import com.nekhaichik.pages.CheckoutStepTwoPage;
 import com.nekhaichik.pages.InventoryPage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+import java.util.List;
 
 public class InventorySteps {
-    private final InventoryPage inventoryPage;
-    public InventorySteps(InventoryPage inventoryPage) {
-        this.inventoryPage = inventoryPage;
+    private final WebDriver driver;
+    protected final Logger log;
+    public InventorySteps(WebDriver driver) {
+        this.driver = driver;
+        this.log = LogManager.getLogger(this.getClass());
+
     }
+
+    private InventoryPage page() {
+        return new InventoryPage(driver);
+    }
+
+    public boolean isOpened() {
+        return page().isOpened();
+    }
+
     public InventorySteps addToCart(String itemName) {
-        inventoryPage.clickItemButton(itemName);
+        page().clickItemButton(itemName);
+        log.info("Add to cart: {}", itemName);
         return this;
     }
 
     public InventorySteps removeFromCart(String itemName) {
-        inventoryPage.clickItemButton(itemName);
+        page().clickItemButton(itemName);
+        log.info("Remove from cart: {}", itemName);
         return this;
     }
+
     public InventorySteps sortBy(String option) {
-        inventoryPage.selectSortOption(option);
+        page().selectSortOption(option);
+        log.info("Sort by: {}", option);
         return this;
     }
 
-    public CartPage openCart() {
-        inventoryPage.header().openCart();
-        return new CartPage(inventoryPage.driver);
+    public CartSteps openCart() {
+        page().header().openCart();
+        return new CartSteps(driver);
     }
 
-    public boolean isButtonText(String itemName, String expected) {
-        return inventoryPage.getItemButtonText(itemName).equals(expected);
+    public List<Double> getItemPrices() {
+        return page().getItemPrices();
     }
 
+    public int getCartItemCount() {
+        return page().header().getCartItemCount();
+    }
+
+    public String getItemButtonText(String itemName) {
+        return page().getItemButtonText(itemName);
+    }
+
+    public boolean isCartBadgeDisplayed() {
+        return page().header().isCartBadgeDisplayed();
+    }
 }

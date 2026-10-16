@@ -15,18 +15,6 @@ public class CheckoutStepTwoPage extends BaseLoggedInPage {
     public CheckoutStepTwoPage(WebDriver driver) {
         super(driver);
         wait.until(ExpectedConditions.urlContains("/checkout-step-two.html"));
-        log.info("Checkout Step Two Page  opened");
-    }
-    public Double getSubTotal() {
-        return parseMoney(getText(subtotalLabel));
-    }
-
-    public Double getTax() {
-        return parseMoney(getText(taxLabel));
-    }
-
-    public Double getTotal() {
-        return parseMoney(getText(totalLabel));
     }
 
     public void clickFinish() {
@@ -37,7 +25,20 @@ public class CheckoutStepTwoPage extends BaseLoggedInPage {
         click(buttonBack);
     }
 
-    private Double parseMoney(String text) {
+    public double getSubTotal() {
+        return parseMoney(getText(subtotalLabel));
+    }
+
+    public double getTax(){
+        return parseMoney(getText(taxLabel));
+    }
+
+    public double getTotal(){
+        return parseMoney(getText(totalLabel));
+
+    }
+
+    private double parseMoney(String text) {
         return Double.parseDouble(text.replaceAll("[^0-9.]", ""));
     }
 }

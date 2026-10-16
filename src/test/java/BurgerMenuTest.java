@@ -1,52 +1,37 @@
-import com.nekhaichik.pages.InventoryPage;
-import com.nekhaichik.pages.LoginPage;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
+public class BurgerMenuTest extends BaseTest {
 
-public class BurgerMenuTest extends BaseTest  {
-
-    protected InventoryPage inventory;
-    protected String itemName = "Sauce Labs Backpack";
+    private static final String ITEM_NAME = "Sauce Labs Backpack";
 
     @BeforeMethod
-    public void login() {
-        inventory = new LoginPage(driver)
-                .openLoginPage()
-                .login("standard_user", "secret_sauce");
+    public void loginBeforeMethod() {
+        loginSteps.openLoginPage().loginAs(USERNAME, PASSWORD);
     }
-
     @Test
     public void aboutOpensSauceLabsSite() {
-        inventory.header().openBurgerMenu().openAbout();
+        burgerMenuSteps.openAbout();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("saucelabs.com"));
-
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("saucelabs.com"),
-                "Должны быть на Sauce Labs, а сейчас: " + currentUrl);
+        Assert.assertTrue(burgerMenuSteps.getCurrentUrl().contains("saucelabs.com"),
+                "Should be on Sauce Labs site");
     }
 
     @Test
     public void resetAppStateClearsCart() {
-        Assert.assertFalse(inventory.header().isCartBadgeDisplayed(),
-                "Перед тестом корзина должна быть пуста");
+        Assert.assertFalse(inventorySteps.isCartBadgeDisplayed(),
+                "Cart badge should not be displayed before test");
 
-        inventory.addToCart(itemName);
-        Assert.assertEquals(inventory.header().getCartItemCount(), 1,
-                "После добавления товара счётчик должен быть 1");
-        Assert.assertEquals(inventory.getItemButtonText(itemName), "Remove",
-                "После добавления кнопка должна быть 'Remove'");
+        inventorySteps.addToCart(ITEM_NAME);
+        Assert.assertEquals(inventorySteps.getCartItemCount(), 1,
+                "Cart badge should be 1 after adding one item");
+        Assert.assertEquals(inventorySteps.getItemButtonText(ITEM_NAME), "Remove",
+                "Button should be 'Remove' after adding");
 
-        inventory.header().openBurgerMenu().resetAppState().closeBurgerMenu();
+        burgerMenuSteps.resetAppState();
 
-        Assert.assertEquals(inventory.header().getCartItemCount(), 0,
-                "После Reset App State корзина должна быть пуста");
-
+        Assert.assertEquals(inventorySteps.getCartItemCount(), 0,
+                "Cart badge should be 0 after Reset App State");
     }
 }

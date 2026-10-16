@@ -15,7 +15,6 @@ public class InventoryPage extends BaseLoggedInPage {
     public InventoryPage(WebDriver driver) {
         super(driver);
         waitForUrl("/inventory.html");
-        log.info("InventoryPage opened");
     }
 
     public List<Double> getItemPrices() {
@@ -43,5 +42,9 @@ public class InventoryPage extends BaseLoggedInPage {
     public String getItemButtonText(String itemName) {
         return getText(byText(itemButton, itemName));
     }
+    public boolean isOpened() {
+        return driver.getCurrentUrl().contains("/inventory.html");
+    }
+
 
 }

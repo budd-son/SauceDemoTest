@@ -1,24 +1,39 @@
 package com.nekhaichik.steps;
 
-import com.nekhaichik.pages.InventoryPage;
-import com.nekhaichik.pages.LoginPage;
+import com.nekhaichik.pages.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 public class LoginSteps {
-    private final LoginPage loginPage;
+    private final WebDriver driver;
+    protected final Logger log;
+
     public LoginSteps(WebDriver driver) {
-        this.loginPage = new LoginPage(driver);
+        this.driver = driver;
+        this.log = LogManager.getLogger(this.getClass());
     }
-    public LoginPage openLoginPage() {
-        return loginPage.openLoginPage();
+
+    private LoginPage page() {
+        return new LoginPage(driver);
     }
-    public InventoryPage login(String username, String password) {
-        loginPage.typeUsername(username);
-        loginPage.typePassword(password);
-        loginPage.clickLogin();
-        return new InventoryPage(loginPage.driver);
+
+    public LoginSteps openLoginPage() {
+        page().openLoginPage();
+        return this;
     }
+
+    public InventorySteps loginAs(String username, String password) {
+        LoginPage page = page();
+        page.typeUsername(username);
+        page.typePassword(password);
+        page.clickLogin();
+        log.info("Logged in as " + username);
+        return new InventorySteps(driver);
+    }
+
     public String getErrorMessage() {
-        return loginPage.getError();
+        log.error("getErrorMessage");
+        return page().getError();
     }
 }

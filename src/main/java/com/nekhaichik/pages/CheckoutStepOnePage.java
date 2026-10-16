@@ -15,7 +15,6 @@ public class CheckoutStepOnePage  extends BaseLoggedInPage {
     public CheckoutStepOnePage(WebDriver driver) {
         super(driver);
         wait.until(ExpectedConditions.urlContains("/checkout-step-one.html"));
-        log.info("Checkout Step One Page");
     }
 
     public CheckoutStepOnePage typeFirstName(String stringFirstName) {

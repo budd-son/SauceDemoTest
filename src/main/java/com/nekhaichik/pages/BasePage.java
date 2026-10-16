@@ -40,7 +40,7 @@ public abstract class BasePage {
     }
 
     protected void waitForUrl(String s) {
-        log.info("Wait for URL contains: {}", s);
+        log.debug("Wait for URL contains: {}", s);
         wait.until(ExpectedConditions.urlContains(s));
     }
     protected By byText(String xpathTemplate, String value) {
