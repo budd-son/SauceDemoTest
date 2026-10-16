@@ -8,17 +8,13 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InventoryPage extends BasePage {
+public class InventoryPage extends BaseLoggedInPage {
     private By productSort = By.xpath("//*[@class='product_sort_container']");
-    private final HeaderComponent header;
     public InventoryPage(WebDriver driver) {
         super(driver);
-        this.header = new HeaderComponent(driver);
         log.info("InventoryPage opened");
     }
-    public HeaderComponent header() {
-        return header;
-    }
+
     public List<Double> getItemPrices() {
         List<WebElement> priceElements = driver.findElements(By.cssSelector(".inventory_item_price"));
         log.debug("In InventoryPage getItemPrices");

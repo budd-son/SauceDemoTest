@@ -7,8 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CheckoutStepOnePage  extends CheckoutStepTwoPage {
-    private final HeaderComponent header;
+public class CheckoutStepOnePage  extends BaseLoggedInPage {
     private final By firstName = By.id("first-name");
     private final By lastName = By.id("last-name");
     private final By postalCode = By.id("postal-code");
@@ -17,11 +16,7 @@ public class CheckoutStepOnePage  extends CheckoutStepTwoPage {
     private By errorMessage = By.xpath("//*[contains(text(),'Error:')]");
     public CheckoutStepOnePage(WebDriver driver) {
         super(driver);
-        this.header = new HeaderComponent(driver);
         log.info("Checkout Step One Page");
-    }
-    public HeaderComponent header() {
-        return header;
     }
 
     public CheckoutStepOnePage inputFirstName(String firstName) {

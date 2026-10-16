@@ -11,21 +11,16 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CartPage extends BasePage {
-    private final HeaderComponent header;
-
+public class CartPage extends BaseLoggedInPage {
     private final By cartItems = By.cssSelector(".cart_item");
     private final By cartItemNames = By.cssSelector(".inventory_item_name");
     private final By checkout = By.xpath("//button[contains(text(),'Checkout')]");
     private final By continueShoppingBtn = By.xpath("//button[@data-test='continue-shopping']");
     public CartPage(WebDriver driver) {
         super(driver);
-        this.header = new HeaderComponent(driver);
         log.info("Cart page opened");
     }
-    public HeaderComponent header() {
-        return header;
-    }
+
 
     public List<String> getCartItemNames() {
         log.debug("Cart page getitem names");

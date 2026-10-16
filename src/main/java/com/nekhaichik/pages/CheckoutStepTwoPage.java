@@ -5,8 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class CheckoutStepTwoPage extends BasePage {
-    private HeaderComponent header;
+public class CheckoutStepTwoPage extends BaseLoggedInPage {
     private final By totalLabel = By.cssSelector(".summary_total_label");
     private final By taxLabel = By.cssSelector(".summary_tax_label");
     private final By subtotalLabel = By.cssSelector(".summary_subtotal_label");
@@ -14,12 +13,7 @@ public class CheckoutStepTwoPage extends BasePage {
     private final By buttonBack = By.id("cancel");
     public CheckoutStepTwoPage(WebDriver driver) {
         super(driver);
-        this.header = new HeaderComponent(driver);
         log.info("Checkout Step Two Page  opened");
-    }
-    public HeaderComponent header()
-    {
-        return header;
     }
 
     public Double getSubTotalSum(){
